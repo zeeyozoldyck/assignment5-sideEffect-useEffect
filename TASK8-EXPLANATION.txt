@@ -1,0 +1,47 @@
+Task 8 - Debug an Infinite Loop Explanation
+==========================================
+
+Given Code:
+useEffect(() => {
+    setCount(count + 1);
+}, [count]);
+
+Problem Analysis:
+This code creates an infinite loop because:
+
+1. The effect runs when 'count' changes (due to [count] dependency)
+2. Inside the effect, we call setCount(count + 1) which updates the state
+3. When state updates, it triggers a re-render
+4. After re-render, useEffect runs again because 'count' changed
+5. This creates an endless cycle: effect → setState → re-render → effect → setState...
+
+Solution:
+To fix this and make it increase only once, we have several options:
+
+Option 1: Use empty dependency array (runs once)
+useEffect(() => {
+    setCount(count + 1);
+}, []); // Empty array means run only once on mount
+
+Option 2: Use a ref to track if already incremented
+import { useRef } from 'react';
+
+const hasIncremented = useRef(false);
+useEffect(() => {
+    if (!hasIncremented.current) {
+        setCount(count + 1);
+        hasIncremented.current = true;
+    }
+}, [count]);
+
+Option 3: Use setTimeout for delayed execution
+useEffect(() => {
+    const timer = setTimeout(() => {
+        setCount(count + 1);
+    }, 0);
+    
+    return () => clearTimeout(timer);
+}, []); // Run once
+
+The key principle: Never update the same state that triggers the effect,
+or use proper dependency management to prevent infinite cycles.

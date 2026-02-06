@@ -1,0 +1,62 @@
+USER ACTIVITY TRACKER - useEffect Quiz Implementation
+=====================================================
+
+This app demonstrates correct and intentional use of useEffect with 5 key concepts:
+
+1. PAGE LOAD TRACKING (useEffect + [])
+   - Concept: Effect runs once on component mount
+   - Implementation: useEffect(() => { console.log('Page loaded'); }, [])
+   - Console output: "Page loaded" (appears only once)
+
+2. BUTTON CLICK COUNTER (Event Handler)
+   - Concept: Events vs Effects - using event handlers, NOT useEffect
+   - Implementation: handleIncrease() function with onClick
+   - State updates via setCount() in event handler
+
+3. REACT TO STATE CHANGE (useEffect with dependency)
+   - Concept: Effect runs when specific state changes
+   - Implementation: useEffect(() => { console.log('Count updated'); }, [count])
+   - Condition: if (count > 0) to avoid logging on initial render
+   - Console output: "Count updated" (only when count changes)
+
+4. UPDATE DOCUMENT TITLE (Side effect outside React)
+   - Concept: DOM manipulation as side effect
+   - Implementation: useEffect(() => { document.title = `Count: ${count}`; }, [count])
+   - Updates browser tab title whenever count changes
+
+5. TIMER WITH CLEANUP (Cleanup function)
+   - Concept: Proper resource cleanup to prevent memory leaks
+   - Implementation: useEffect with setInterval and cleanup function
+   - Cleanup: return () => clearInterval(intervalId)
+   - Starts/stops with "Start Tracking"/"Stop Tracking" button
+
+6. CONDITIONAL EFFECT (useEffect + condition)
+   - Concept: Effect runs conditionally based on state
+   - Implementation: useEffect(() => { if (isTracking) console.log('Tracking active'); }, [isTracking])
+   - Only logs when tracking is active
+
+KEY LEARNING POINTS:
+====================
+✓ useEffect with empty array [] runs once on mount
+✓ useEffect with dependencies [state] runs when that state changes
+✓ Event handlers (onClick) are for user interactions, not useEffect
+✓ Cleanup functions prevent memory leaks
+✓ Conditional logic inside effects controls when they run
+✓ Document side effects (like title changes) belong in useEffect
+
+TESTING:
+========
+1. Open browser console to see logs
+2. Click "Increase Count" button - see count increase and "Count updated" log
+3. Watch document title change to "Count: X"
+4. Click "Start Tracking" - timer starts, "Tracking active" logs
+5. Click "Stop Tracking" - timer stops, no more logs
+6. "Page loaded" should appear only once in console
+
+RESTRICTIONS FOLLOWED:
+======================
+✓ Only functional components used
+✓ No external libraries
+✓ No effects triggered in click handlers
+✓ No infinite loops
+✓ Proper cleanup implemented
